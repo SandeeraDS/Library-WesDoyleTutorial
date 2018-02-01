@@ -20,7 +20,7 @@ namespace LibraryServices
 
         public string StatusName(int Id)
         {
-            return _context.Status.FirstOrDefault(name => name.Id == Id).Name;
+            return _context.LibraryAssets.FirstOrDefault(name => name.Id == Id).Status.Name;
         }
         public void Add(LibraryAsset NewAsset)
         {
