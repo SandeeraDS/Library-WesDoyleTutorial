@@ -20,7 +20,7 @@ namespace LibraryData
         bool IsCheckedOut(int id);
 
         string GetCurrentHoldPatron(int id);
-        string GetCurrentHoldPlaced(int id);
+        DateTime GetCurrentHoldPlaced(int id);
         string GetCurrentPatron(int id);
         IEnumerable<Holds> GetCurrentHolds(int id);
 

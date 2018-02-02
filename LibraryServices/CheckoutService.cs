@@ -276,7 +276,7 @@ namespace LibraryServices
                 return patron.FirstName + " " + patron.LastName;
             }
 
-            public string GetCurrentHoldPlaced(int holdId)
+            public DateTime GetCurrentHoldPlaced(int holdId)
             {
                 var hold = _context.Holds
                     .Include(a => a.LibraryAssets)
@@ -284,7 +284,7 @@ namespace LibraryServices
                     .Where(v => v.Id == holdId);
 
                 return hold.Select(a => a.HoldPlace)
-                    .FirstOrDefault().ToString();
+                    .FirstOrDefault();
             }
 
             public IEnumerable<Holds> GetCurrentHolds(int id)

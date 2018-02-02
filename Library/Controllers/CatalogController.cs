@@ -11,11 +11,14 @@ namespace Library.Controllers
     public class CatalogController:Controller
     {
 
-        public ILibraryAssets _assets;
+        private ILibraryAssets _assets;
+        private ICheckout _checkouts;
 
-        public CatalogController(ILibraryAssets assets)
+
+        public CatalogController(ILibraryAssets assets,ICheckout checkouts)
         {
             _assets = assets;
+            _checkouts = checkouts;
         }
 
         //show Library Items
@@ -49,6 +52,13 @@ namespace Library.Controllers
 
             var asset = _assets.GetByID(id);
 
+            var currentHolds = _checkouts.GetCurrentHolds(id)
+                .Select(a => new AssetHoldModel
+                {
+                    HoldPlaced = _checkouts.GetCurrentHoldPlaced(a.Id).ToString("d"),
+                    PatronName = _checkouts.GetCurrentHoldPatron(a.Id)
+                });
+
             var model = new AssetDetailModel
             {
                 AssetId = id,
@@ -60,7 +70,12 @@ namespace Library.Controllers
                 AuthorOrDirector = _assets.GetAuthorOrDirector(id),
                 CurrentLocation = _assets.GetCurrentLocation(id).Name,
                 DeweyCallNumber = _assets.GetDeweyIndex(id),
-                ISBN = _assets.GetIsbn(id)
+                ISBN = _assets.GetIsbn(id),
+                CheckoutHistory = _checkouts.GetCheckoutHistory(id),
+              //  CurrentAssociatedLibraryCard = _assets.GetLibraryCardByAssetId(id),
+                LatestCheckout =_checkouts.GetLatestCheckout(id),
+                PatronName=_checkouts.GetCurrentPatron(id),
+                CurrentHolds=currentHolds
             };
 
             return View(model);
